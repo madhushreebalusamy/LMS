@@ -1,3 +1,4 @@
+from typing import List
 from mysql import connector
 from properties import PROPERTIES 
 from modals import Book, Author
@@ -19,3 +20,26 @@ class DBManager:
         cursor.close()
         self.db.commit()
     
+    def selectAllBooks(self, model: Book) -> List[Book]:
+        cursor = self.db.cursor()
+        cursor.execute("select * from books")
+        rawAll = cursor.fetchall()
+        results: List[Book] = []
+
+        for book in rawAll:
+            results.append(Book(*book))
+
+        cursor.close()
+        return results
+
+    def selectAllAuthors(self, model: Author) -> List[Book]:
+        cursor = self.db.cursor()
+        cursor.execute("select * from books")
+        rawAll = cursor.fetchall()
+        results: List[Author] = []
+
+        for author in rawAll:
+            results.append(Author(*author))
+
+        cursor.close()
+        return results
