@@ -1,5 +1,5 @@
 from flask import (
-    Flask, response, session, 
+    Flask, request, session, 
     render_template, redirect, send_file
 )
 from properties import PROPERTIES

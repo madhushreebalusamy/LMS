@@ -20,7 +20,7 @@ class DBManager:
         cursor.close()
         self.db.commit()
     
-    def selectAllBooks(self, model: Book) -> List[Book]:
+    def selectAllBooks(self) -> List[Book]:
         cursor = self.db.cursor()
         cursor.execute("select * from books")
         rawAll = cursor.fetchall()
@@ -43,3 +43,10 @@ class DBManager:
 
         cursor.close()
         return results
+
+    def deleteBookOrAuthor(self, model: Book | Author):
+        cursor = self.db.cursor()
+        tb = "books" if isinstance(model, Book) else "authors"
+        cursor.execute("delete from ? where id = ?", [model.id])
+        cursor.close()
+        self.db.commit()
