@@ -12,9 +12,10 @@ class DBManager:
             password = PROPERTIES.DATABASE.PASSWORD,
         )
     
-    def insertIntoAuthors(self, author: Author):
+    def insertInto(self, model: Book | Author):
         cursor = self.db.cursor()
-        cursor.execute(
-            "INSERT INTO authors (name, dob, country) VALUES (?, ?, ?)", 
-            [author.name, author.dob, author.country]
-        )
+        query, params = model
+        cursor.execute(query, params)
+        cursor.close()
+        self.db.commit()
+    
