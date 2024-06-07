@@ -3,49 +3,101 @@ from flask import (
     render_template, redirect, send_file
 )
 from properties import PROPERTIES
+from database import * 
 
 
 app = Flask(__name__)
 app.secret_key = PROPERTIES.APP.SECRET_KEY
 
+DB = DBManager()
 
-@app.route("/")
+@app.route("/", methods = ["GET", "POST"])
 def index():
-    return render_template("index.html")
+    sid = session.get("id", None)
+    error = None
+    return render_template("index.html", sid, error=error)
 
 
-@app.route("/login")
+@app.route("/login", methods = ["GET", "POST"])
 def login():
-    return render_template("login.html")
+    sid = session.get("id", None)
+    error = None
+    if request.method == "POST":
+        id = request.form.get("id")
+        password = request.form.get("password")
+        model = Admin(id, password)
+        exists = DB.getAdmin(model)
+        if exists:
+            session["sid"] = id
+            return redirect("/")
+        
+    return render_template("login.html", sid, error=error)
 
-@app.route("/signup")
+@app.route("/signup", methods = ["GET", "POST"])
 def signup():
-    return render_template("signup.html")
+    sid = session.get("id", None)
+    error = None
+    if request.method == "POST":
+        id = request.form.get("id")
+        password = request.form.get("password")
+        model = Admin(id, password)
+        exists = DB.getAdmin(model)
+        if exists:
+            error = "Admin already exists"
+            return render_template("login.html", sid, error=error)
+        
+        DB.addAdmin(model)
+        session["sid"] = model.id
+        return redirect("/")
 
-@app.route("/books")
+    return render_template("login.html", sid, error=error)
+
+@app.route("/books", methods = ["GET", "POST"])
 def books():
-    return render_template("books.html")
+    sid = session.get("id", None)
+    error = None
+    if sid is None:
+        return redirect("/")
+    return render_template("books.html", sid, error=error)
 
-@app.route("/books/view")
+@app.route("/books/view", methods = ["GET", "POST"])
 def viewAllBooks():
-    return render_template("viewBooks.html")
+    sid = session.get("id", None)
+    error = None
+    if sid is None:
+        return redirect("/")
+    return render_template("viewBooks.html", sid, error=error)
 
-@app.route("/books/delete")
+@app.route("/books/delete", methods = ["GET", "POST"])
 def deleteBook():
+    sid = session.get("id", None)
+    error = None
+    if sid is None:
+        return redirect("/")
     return {}
 
-@app.route("/books/add")
+@app.route("/books/add", methods = ["GET", "POST"])
 def addBook():
-    return render_template("addBook.html")
+    sid = session.get("id", None)
+    error = None
+    if sid is None:
+        return redirect("/")
+    return render_template("addBook.html", sid, error=error)
 
-@app.route("/authors/add")
+@app.route("/authors/add", methods = ["GET", "POST"])
 def addAuthor():
-    return render_template("addAuthor.html")
+    sid = session.get("id", None)
+    error = None
+    return render_template("addAuthor.html", sid, error=error)
 
-@app.route("/authors/view")
+@app.route("/authors/view", methods = ["GET", "POST"])
 def viewAuthors():
-    return render_template("viewAuthors.html")
+    sid = session.get("id", None)
+    error = None
+    return render_template("viewAuthors.html", sid, error=error)
 
-@app.route("/authors/delete")
+@app.route("/authors/delete", methods = ["GET", "POST"])
 def deleteAuthor():
+    sid = session.get("id", None)
+    error = None
     return {}

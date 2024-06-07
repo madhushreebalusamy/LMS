@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+</head>
+<body>
+    <div>
+        <h1>Library Managemet System</h1>
+        <div>
+            {% if sid %}
+                <a href="/books/add">New Book</a>
+                <a href="/books/delete">Remove Book</a>
+                <a href="/books/give">Give Book</a>
+                <a href="/books/get">View Books</a>
+                <a href="/students">View Students</a>
+
+                <a href="/authors/view">View All Authors</a>
+                <a href="/authors/add">New Author</a>
+                <a href="/authors/authors">Delete Author</a>
+            {% else %}
+                <a href="/login">Login</a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
