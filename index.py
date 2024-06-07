@@ -13,17 +13,17 @@ DB = DBManager()
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     return render_template("index.html", sid=sid, error=error)
 
 
 @app.route("/login", methods = ["GET", "POST"])
 def login():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     if request.method == "POST":
-        id = request.form.get("id")
+        id = request.form.get("sid")
         password = request.form.get("password")
         model = Admin(id, password)
         exists = DB.getAdmin(model)
@@ -35,12 +35,13 @@ def login():
 
 @app.route("/signup", methods = ["GET", "POST"])
 def signup():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     if request.method == "POST":
-        id = request.form.get("id")
+        id = request.form.get("sid")
         password = request.form.get("password")
         model = Admin(id=id, password=password)
+        print(model.model_dump())
         exists = DB.getAdmin(model)
         if exists:
             error = "Admin already exists"
@@ -54,7 +55,7 @@ def signup():
 
 @app.route("/books", methods = ["GET", "POST"])
 def books():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     if sid is None:
         return redirect("/")
@@ -62,7 +63,7 @@ def books():
 
 @app.route("/books/view", methods = ["GET", "POST"])
 def viewAllBooks():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     if sid is None:
         return redirect("/")
@@ -70,15 +71,15 @@ def viewAllBooks():
 
 @app.route("/books/delete", methods = ["GET", "POST"])
 def deleteBook():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     if sid is None:
         return redirect("/")
-    return {}
+    return render_template("deleteBook.html", sid=sid, error=error)
 
 @app.route("/books/add", methods = ["GET", "POST"])
 def addBook():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     if sid is None:
         return redirect("/")
@@ -86,21 +87,21 @@ def addBook():
 
 @app.route("/authors/add", methods = ["GET", "POST"])
 def addAuthor():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     return render_template("addAuthor.html", sid=sid, error=error)
 
 @app.route("/authors/view", methods = ["GET", "POST"])
 def viewAuthors():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
     return render_template("viewAuthors.html", sid=sid, error=error)
 
 @app.route("/authors/delete", methods = ["GET", "POST"])
 def deleteAuthor():
-    sid = session.get("id", None)
+    sid = session.get("sid", None)
     error = None
-    return {}
+    return render_template("deleteAuthor.html", sid=sid, error=error)
 
 
 if __name__ == "__main__":

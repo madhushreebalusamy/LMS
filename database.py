@@ -12,6 +12,7 @@ class DBManager:
             host = PROPERTIES.DATABASE.URL,
             user = PROPERTIES.DATABASE.USER,
             password = PROPERTIES.DATABASE.PASSWORD,
+            database = PROPERTIES.DATABASE.DATABASE
         )
     
     def insertInto(self, model: Book | Author):
@@ -154,7 +155,8 @@ class DBManager:
         return model if one else None
 
     def addAdmin(self, model: Admin):
-        model = self.getAdmin(model)
+        if not self.getAdmin(model):
+            return False
         cursor = self.db.cursor()
         cursor.execute('insert into admins values (%s, %s)', [model.id, model.password])
         cursor.close()

@@ -8,3 +8,4 @@ class PROPERTIES:
         URL = "localhost"
         USER = "root"
         PASSWORD = "Ma@13092004"
+        DATABASE = "test"
