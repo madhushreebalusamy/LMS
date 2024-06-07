@@ -15,7 +15,6 @@ DB.createTables()
 @app.route("/", methods = ["GET", "POST"])
 def index():
     sid = session.get("sid", None)
-    session["error"] = None
 
     
     return render_template("index.html", sid=sid, error=session.pop("error", None))
@@ -24,7 +23,6 @@ def index():
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     sid = session.get("sid", None)
-    session["error"] = None
     if request.method == "POST":
         id = request.form.get("id")
         password = request.form.get("password")
@@ -45,7 +43,6 @@ def login():
 @app.route("/signup", methods = ["GET", "POST"])
 def signup():
     sid = session.get("sid", None)
-    session["error"] = None
     if request.method == "POST":
         id = request.form.get("id")
         password = request.form.get("password")
@@ -55,7 +52,7 @@ def signup():
         if exists:
             session["error"] = "Admin already exists"
             error = session.get("error")
-            session["error"] = None
+    
             return render_template("signup.html", sid=sid, error=session.pop("error", None))
 
         DB.addAdmin(model)
@@ -69,7 +66,6 @@ def signup():
 @app.route("/books", methods = ["GET", "POST"])
 def books():
     sid = session.get("sid", None)
-    session["error"] = None
     if sid is None:
         return redirect("/")
 
@@ -80,7 +76,6 @@ def books():
 @app.route("/books/view", methods = ["GET", "POST"])
 def viewAllBooks():
     sid = session.get("sid", None)
-    session["error"] = None
     if sid is None:
         return redirect("/")
 
@@ -92,7 +87,6 @@ def viewAllBooks():
 @app.route("/books/delete", methods = ["GET", "POST"])
 def deleteBook():
     sid = session.get("sid", None)
-    session["error"] = None
     if sid is None:
         return redirect("/login")
     
@@ -113,7 +107,6 @@ def deleteBook():
 @app.route("/books/add", methods = ["GET", "POST"])
 def addBook():
     sid = session.get("sid", None)
-    session["error"] = None
     if request.method == "POST":
         title = request.form.get("title")
         authorId = request.form.get("authorId")
@@ -146,7 +139,6 @@ def addBook():
 @app.route("/authors/add", methods = ["GET", "POST"])
 def addAuthor():
     sid = session.get("sid", None)
-    session["error"] = None
     if request.method == "POST":
         name = request.form.get("name")
         dob = request.form.get("dob")
@@ -162,21 +154,19 @@ def addAuthor():
 @app.route("/authors/view", methods = ["GET", "POST"])
 def viewAuthors():
     sid = session.get("sid", None)
-    session["error"] = None
 
     if sid is None:
         return redirect("/login")
 
     allAuthors = DB.selectAllAuthors()
     print(allAuthors)
-    error = session.pop("error", None)
+
     return render_template("viewAuthors.html", sid=sid, authors=allAuthors, error=session.pop("error", None))
 
 
 @app.route("/authors/delete", methods = ["GET", "POST"])
 def deleteAuthor():
     sid = session.get("sid", None)
-    session["error"] = None
 
     if sid == None:
         return redirect("/login")
@@ -189,7 +179,7 @@ def deleteAuthor():
             DB.deleteBookOrAuthor(author)
             return redirect("/authors/view")
         else:
-            session["error"] = "Auhor Not Found"
+            session["error"] = "Author Not Found"
             return redirect("/authors/delete")
 
     return render_template("deleteAuthor.html", sid=sid, error=session.pop("error", None))

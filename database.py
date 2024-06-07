@@ -119,7 +119,7 @@ class DBManager:
         cursor = self.db.cursor()
         cursor.execute("SELECT * FROM authors where id = %s", [model.id])
         res = cursor.fetchone()
-        if res:
+        if not res:
             return None
         
         model.name = res[1]
