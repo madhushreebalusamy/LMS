@@ -7,5 +7,5 @@ class PROPERTIES:
     class DATABASE:
         URL = "localhost"
         USER = "root"
-        PASSWORD = "Ma@13092004"
+        PASSWORD = "root"
         DATABASE = "test"

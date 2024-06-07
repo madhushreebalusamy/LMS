@@ -14,14 +14,47 @@ class DBManager:
             password = PROPERTIES.DATABASE.PASSWORD,
             database = PROPERTIES.DATABASE.DATABASE
         )
-    
+
+    def createTables(self):
+        cursor = self.db.cursor()
+        cursor.execute("""
+            create table authors (
+                id integer primary key auto_increment,
+                name text not null,
+                dob datetime,
+                country text
+            );
+        """)
+        cursor.execute("""
+            create table books (
+                id integer primary key auto_increment,
+                title text not null,
+                authorId integer
+                , date datetime,
+                edition integer default 1,
+                totalBooks integer default 10,
+                inStock integer default 10,
+                minStock integer default 2,
+                foreign key (authorId) references authors(id)
+            );
+        """)
+        cursor.execute("""
+            create table admins (
+                id integer primary key auto_increment,
+                password text not null
+            );
+        """)
+        cursor.close()
+        self.db.commit()
+        self.db.close()
+
     def insertInto(self, model: Book | Author):
         cursor = self.db.cursor()
         query, params = model
         cursor.execute(query, params)
         cursor.close()
         self.db.commit()
-    
+
     def selectAllBooks(self) -> List[Book]:
         cursor = self.db.cursor()
         cursor.execute("select * from books")
@@ -33,8 +66,8 @@ class DBManager:
 
         cursor.close()
         return results
-
-    def selectAllAuthors(self, model: Author) -> List[Book]:
+    
+    def selectAllAuthors(self) -> List[Book]:
         cursor = self.db.cursor()
         cursor.execute("select * from books")
         rawAll = cursor.fetchall()
@@ -95,7 +128,7 @@ class DBManager:
                 totalBooks = %s,
                 inStock = %s,
                 minStock = %s
-            WHERE id = %s""", 
+            WHERE id = %s""",
             [
                 model.title,
                 model.authorId,
@@ -107,7 +140,7 @@ class DBManager:
                 model.id
             ])
         cursor.close()
-    
+
     def updateAuthor(self, model: Author):
         cursor = self.db.cursor()
         cursor.execute("""
@@ -116,7 +149,7 @@ class DBManager:
                 name = %s,
                 dob = %s,
                 country = %s
-            WHERE id = %s""", 
+            WHERE id = %s""",
             [
                 model.name,
                 model.dob,
@@ -124,10 +157,9 @@ class DBManager:
                 model.id
             ])
         cursor.close()
-    
 
     def incrementStock(self, model: Book, incrementBy = 1):
-        model = self.getStockDetails(model)
+        model = self.getBook(model)
         if (model.inStock + incrementBy) > model.totalBooks:
             return False
         model.inStock += incrementBy
@@ -135,7 +167,7 @@ class DBManager:
         return True
     
     def decrementStock(self, model: Book, decrementBy = 1):
-        model = self.getStockDetails(model)
+        model = self.getBook(model)
         stock = model.inStock
         stock -= decrementBy
         if stock < model.minStock:
