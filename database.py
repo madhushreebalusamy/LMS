@@ -48,13 +48,13 @@ class DBManager:
     def deleteBookOrAuthor(self, model: Book | Author):
         cursor = self.db.cursor()
         tb = "books" if isinstance(model, Book) else "authors"
-        cursor.execute("delete from ? where id = ?", [model.id])
+        cursor.execute("delete from %s where id = %s", [model.id])
         cursor.close()
         self.db.commit()
 
     def getBook(self, model: Book) -> Book | None:
         cursor = self.db.cursor()
-        cursor.execute("SELECT * FROM books where id = ?", [model.id])
+        cursor.execute("SELECT * FROM books where id = %s", [model.id])
         res = cursor.fetchone()
         if res:
             return None
@@ -71,7 +71,7 @@ class DBManager:
 
     def getAuthor(self, model: Author) -> Author | None:
         cursor = self.db.cursor()
-        cursor.execute("SELECT * FROM authors where id = ?", [model.id])
+        cursor.execute("SELECT * FROM authors where id = %s", [model.id])
         res = cursor.fetchone()
         if res:
             return None
@@ -87,14 +87,14 @@ class DBManager:
         cursor.execute("""
             UPDATE books 
             SET 
-                title = ?,
-                authorId = ?,
-                date = ?,
-                edition = ?,
-                totalBooks = ?,
-                inStock = ?,
-                minStock = ?
-            WHERE id = ?""", 
+                title = %s,
+                authorId = %s,
+                date = %s,
+                edition = %s,
+                totalBooks = %s,
+                inStock = %s,
+                minStock = %s
+            WHERE id = %s""", 
             [
                 model.title,
                 model.authorId,
@@ -112,10 +112,10 @@ class DBManager:
         cursor.execute("""
             UPDATE authors 
             SET 
-                name = ?,
-                dob = ?,
-                country = ?
-            WHERE id = ?""", 
+                name = %s,
+                dob = %s,
+                country = %s
+            WHERE id = %s""", 
             [
                 model.name,
                 model.dob,
@@ -146,9 +146,9 @@ class DBManager:
     def getAdmin(self, model: Admin):
         cursor = self.db.cursor()
         if not model.password:
-            cursor.execute("select id from admins where id = ?", [model.id])
+            cursor.execute("select id from admins where id = %s", [model.id])
         else:
-            cursor.execute("select id from admins where id = ? and password = ?", [model.id, model.password])
+            cursor.execute("select id from admins where id = %s and password = %s", [model.id, model.password])
                 
         one = cursor.fetchone()
         return model if one else None
@@ -156,7 +156,7 @@ class DBManager:
     def addAdmin(self, model: Admin):
         model = self.getAdmin(model)
         cursor = self.db.cursor()
-        cursor.execute('insert into admins values (?, ?)', [model.id, model.password])
+        cursor.execute('insert into admins values (%s, %s)', [model.id, model.password])
         cursor.close()
         return True
 
@@ -169,7 +169,7 @@ class DBManager:
     
     def removeAdmin(self, model: Admin):
         cursor = self.db.cursor()
-        cursor.execute('delete from admins where id = ?', [model.id])
+        cursor.execute('delete from admins where id = %s', [model.id])
         cursor.close()
         return True
         

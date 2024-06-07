@@ -5,6 +5,6 @@ class PROPERTIES:
         SECRET_KEY = "the secret key"
 
     class DATABASE:
-        URL = "jdbc:mysql://localhost:3306"
+        URL = "localhost"
         USER = "root"
-        PASSWORD = "MA@13092004"
+        PASSWORD = "Ma@13092004"

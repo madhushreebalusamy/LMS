@@ -1,0 +1,23 @@
+create table authors (
+    id integer primary key auto_increment,
+    name text not null,
+    dob datetime,
+    country text
+);
+
+create table books (
+    id integer primary key auto_increment,
+    title text not null,
+    authorId integer
+    , date datetime,
+    edition integer default 1,
+    totalBooks integer default 10,
+    inStock integer default 10,
+    minStock integer default 2,
+    foreign key (authorId) references authors(id)
+);
+
+create table admins (
+    id integer primary key auto_increment,
+    password text not null
+);
