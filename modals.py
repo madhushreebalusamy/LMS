@@ -4,36 +4,36 @@ from datetime import datetime
 
 class Book(BaseModel):
     id: int
-    title: str
-    authorId: str
-    date: datetime
+    title: str = ""
+    authorId: int = -1
+    date: datetime = datetime.now().date
     edition: int = 1
     totalBooks: int = 10
     inStock: int = 10
     minStock: int = 2
 
     def insertQuery(self):
-        query = "INSERT INTO books (title, authorId, date, edition, totalBooks, inStock, minStock) values (?, ?, ?, ?, ?, ?, ?)"
+        query = "INSERT INTO books (title, authorId, date, edition, totalBooks, inStock, minStock) values (%s, %s, %s, %s, %s, %s, %s)"
         params = [i for i in self.model_dump(exclude=("id",)).values()]
         return query, params
 
 class Author(BaseModel):
     id: int = -1
-    name: str
-    dob: str
-    country: str | None
+    name: str = ""
+    date: datetime = datetime.now()
+    country: str | None = None
 
     def insertQuery(self):
-        query = "INSERT INTO authors (name, dob, country) values (?, ?, ?)"
+        query = "INSERT INTO authors (name, dob, country) values (%s, %s, %s)"
         params = [i for i in self.model_dump(exclude=("id",)).values()]
         return query, params
 
 class Admin(BaseModel):
     id: int
-    password: str | None
+    password: str | None = None
 
     def insertQuery(self):
-        query = "INSERT INTO admins (id, password) values (?, ?)"
+        query = "INSERT INTO admins (id, password) values (%s, %s)"
         params = [i for i in self.model_dump().values()]
         return query, params
 

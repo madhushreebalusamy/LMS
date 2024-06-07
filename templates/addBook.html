@@ -6,10 +6,20 @@
     <title>Document</title>
 </head>
 <body>
-    <form mthod="POST">
-        <input type="text" name="id" required />
-        <input type="text" name="password" required />
-        <input type="submit" value="Add New Book" />
+    {% if error %}
+        <div class="error">
+            <div class="errorMsg">{{ error }}</div>
+        </div>
+    {% endif %}
+    <form method="POST">
+        <input required placeholder="title" type="text" name="title"/>
+        <input required placeholder="authorId" type="text" name="authorId"/>
+        <input required placeholder="date" type="date" name="date"/>
+        <input required placeholder="edition" type="number" name="edition"/>
+        <input required placeholder="totalBooks" type="number" name="totalBooks"/>
+        <input required placeholder="inStock" type="number" name="inStock"/>
+        <input required placeholder="minStock" type="number" name="minStock"/>
+        <input type="submit" value="Add Book">
     </form>
 </body>
 </html>

@@ -18,7 +18,7 @@ class DBManager:
     def createTables(self):
         cursor = self.db.cursor()
         cursor.execute("""
-            create table authors (
+            create table if not exists authors (
                 id integer primary key auto_increment,
                 name text not null,
                 dob datetime,
@@ -26,7 +26,7 @@ class DBManager:
             );
         """)
         cursor.execute("""
-            create table books (
+            create table if not exists books (
                 id integer primary key auto_increment,
                 title text not null,
                 authorId integer
@@ -39,18 +39,18 @@ class DBManager:
             );
         """)
         cursor.execute("""
-            create table admins (
+            create table if not exists admins (
                 id integer primary key auto_increment,
                 password text not null
             );
         """)
         cursor.close()
         self.db.commit()
-        self.db.close()
 
     def insertInto(self, model: Book | Author):
         cursor = self.db.cursor()
-        query, params = model
+        print(model.insertQuery())
+        query, params = model.insertQuery()[0], model.insertQuery()[1]
         cursor.execute(query, params)
         cursor.close()
         self.db.commit()
@@ -62,19 +62,28 @@ class DBManager:
         results: List[Book] = []
 
         for book in rawAll:
-            results.append(Book(*book))
+            results.append(Book(
+                id = book[0],
+                title = book[1],
+                authorId = book[2],
+                date = book[3],
+                edition = book[4],
+                totalBooks = book[5],
+                inStock = book[6],
+                minStock = book[7]
+            ))
 
         cursor.close()
         return results
     
     def selectAllAuthors(self) -> List[Book]:
         cursor = self.db.cursor()
-        cursor.execute("select * from books")
+        cursor.execute("select * from authors")
         rawAll = cursor.fetchall()
         results: List[Author] = []
 
         for author in rawAll:
-            results.append(Author(*author))
+            results.append(Author(id = author[0], name = author[1], dob = author[2], country=author[3]))
 
         cursor.close()
         return results
@@ -82,7 +91,10 @@ class DBManager:
     def deleteBookOrAuthor(self, model: Book | Author):
         cursor = self.db.cursor()
         tb = "books" if isinstance(model, Book) else "authors"
-        cursor.execute("delete from %s where id = %s", [model.id])
+        if tb == "books":
+            cursor.execute("delete from books where id = %s", [model.id])
+        else: 
+            cursor.execute("delete from authors where id = %s", [model.id])
         cursor.close()
         self.db.commit()
 
@@ -90,7 +102,7 @@ class DBManager:
         cursor = self.db.cursor()
         cursor.execute("SELECT * FROM books where id = %s", [model.id])
         res = cursor.fetchone()
-        if res:
+        if not res:
             return None
         
         model.title = res[1]
@@ -182,8 +194,9 @@ class DBManager:
             cursor.execute("select id from admins where id = %s", [model.id])
         else:
             cursor.execute("select id from admins where id = %s and password = %s", [model.id, model.password])
-                
+
         one = cursor.fetchone()
+        print(one)
         return model if one else None
 
     def addAdmin(self, model: Admin):

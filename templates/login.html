@@ -6,8 +6,13 @@
     <title>Document</title>
 </head>
 <body>
+    {% if error %}
+        <div class="error">
+            <div class="errorMsg">{{ error }}</div>
+        </div>
+    {% endif %}
     <form method="post">
-        <input type="text" name="id" required />
+        <input type="number" name="id" required />
         <input type="text" name="password" required />
         <input type="submit" value="Login">
     </form>

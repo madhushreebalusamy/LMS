@@ -6,6 +6,11 @@
     <title>Document</title>
 </head>
 <body>
+    {% if error %}
+        <div class="error">
+            <div class="errorMsg">{{ error }}</div>
+        </div>
+    {% endif %}
     {% for i in authors %}
         <div>{{ i }}</div>
     {% endfor %}
