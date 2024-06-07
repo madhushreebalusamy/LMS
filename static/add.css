@@ -29,5 +29,5 @@ input[type="submit"]{
 form {
     align-items: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;
 }
