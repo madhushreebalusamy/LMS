@@ -18,10 +18,10 @@ class Book(BaseModel):
         return query, params
 
 class Author(BaseModel):
-    id: int
+    id: int = -1
     name: str
     dob: str
-    country: str
+    country: str | None
 
     def insertQuery(self):
         query = "INSERT INTO authors (name, dob, country) values (?, ?, ?)"
