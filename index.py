@@ -4,6 +4,7 @@ from flask import (
 )
 from properties import PROPERTIES
 from database import *
+import os
 
 app = Flask(__name__)
 app.secret_key = PROPERTIES.APP.SECRET_KEY
@@ -183,6 +184,11 @@ def deleteAuthor():
             return redirect("/authors/delete")
 
     return render_template("deleteAuthor.html", sid=sid, error=session.pop("error", None))
+
+
+@app.route("/static/<path:path>")
+def static(path):
+    return send_file(os.path.join("static", path))
 
 
 if __name__ == "__main__":
