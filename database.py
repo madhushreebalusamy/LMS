@@ -123,7 +123,7 @@ class DBManager:
             return None
         
         model.name = res[1]
-        model.dob = res[2]
+        model.date = res[2]
         model.country = res[3]
 
         return model
