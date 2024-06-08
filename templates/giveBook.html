@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if error %}
+    <div class="error">
+        <div class="errorMsg">{{ error }}</div>
+    </div>
+{% endif %}
+    <form method="POST">
+        <input type="number" name="bookId" placeholder="bookId" id="" required />
+        <input type="number" name="studentId" placeholder="studentId" id="" required />
+        <input type="text" name="studentName" placeholder="studentName" id="" required />
+        <input type="date" name="rentDate" placeholder="rentDate" id="" required />
+        <input type="date" name="dueDate" placeholder="dueDate" id="" required />
+        <input type="submit" name="Submit" value="Submit" />
+    </form>
+</body>
+</html>

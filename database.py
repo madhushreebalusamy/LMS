@@ -1,7 +1,7 @@
 from typing import List
 from mysql import connector
 from properties import PROPERTIES 
-from modals import Book, Author, Student, bookWithStudent, Admin
+from modals import Book, Author, Student, BookWithStudent, Admin
 from pydantic_core import from_json
 import json
 
@@ -223,7 +223,7 @@ class DBManager:
 
 
 class BookRentManager:
-    def __init__(self, jsonFile = "/database/rentDetails.json"):
+    def __init__(self, jsonFile = "rentDetails.json"):
         self.jsonFile = jsonFile
 
     def loadAll(self) -> dict:
@@ -231,24 +231,31 @@ class BookRentManager:
         data = from_json(jsonFile.read())
         return data
     
-    def addBookToStudent(self, std: Student, bws: bookWithStudent):
+    def addBookToStudent(self, std: Student, bws: BookWithStudent):
         data = self.loadAll()
         stdData = data.get(std.id, std.model_dump())
-        if stdData["books"].get(bws.id) is None:
+        if stdData.get("books", None) is None:
+            stdData["books"] = {}
+        if stdData.get("books").get(bws.id) is not None:
             return False
         stdData["books"][bws.id] = bws.model_dump()
+        stdData["books"][bws.id]["rentOn"] = str(stdData["books"][bws.id]["rentOn"])
+        stdData["books"][bws.id]["dueDate"] = str(stdData["books"][bws.id]["dueDate"])
         data[std.id] = stdData
-        with open(self.jsonFile, "wb") as fp:
+
+        with open(self.jsonFile, "w") as fp:
+            print(data)
             json.dump(data, fp)
+            fp.close()
         return True
     
-    def returnBook(self, std: Student, bws: bookWithStudent):
+    def returnBook(self, std: Student, bws: BookWithStudent):
         data = self.loadAll()
         stdData = data.get(std.id, std.model_dump())
         if stdData["books"].get(bws.id) is None:
             return False
         stdData["books"].pop(bws.id)
         data[std.id] = stdData
-        with open(self.jsonFile, "wb") as fp:
+        with open(self.jsonFile, "w") as fp:
             json.dump(data, fp)
         return True

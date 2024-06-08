@@ -12,12 +12,13 @@ app.secret_key = PROPERTIES.APP.SECRET_KEY
 DB = DBManager()
 DB.createTables()
 
+BM = BookRentManager()
+
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
     sid = session.get("sid", None)
 
-    
     return render_template("index.html", sid=sid, error=session.pop("error", None))
 
 
@@ -186,8 +187,61 @@ def deleteAuthor():
     return render_template("deleteAuthor.html", sid=sid, error=session.pop("error", None))
 
 
+@app.route("/books/give", methods=["GET", "POST"])
+def giveBook():
+    sid = session.get("sid", None)
+
+    if sid is None:
+        return redirect("/login")
+    
+    if request.method == "POST":
+        bookId = request.form.get("bookId")
+        studentId = request.form.get("studentId")
+        studentName = request.form.get("studentName")
+        rentDate = request.form.get("rentDate")
+        dueDate = request.form.get("dueDate")
+
+        book = Book(id = bookId)
+
+        exists = DB.getBook(book)
+        if exists is None:
+            session["error"] = "Book not found"
+            return redirect("/books/view")
+
+        book = exists
+        canGive = book.minStock < (book.inStock - 1)
+        print(canGive)
+        if not canGive:
+            session["error"] = "Book not in stock"
+            return redirect("/books/view")
+    
+        canGive = DB.decrementStock(book)
+        print(canGive)
+        if not canGive:
+            session["error"] = "Book not given"
+            return redirect("/books/view")
+        
+        bookWithStudent = BookWithStudent(id = bookId, rentOn=rentDate, dueDate=dueDate)
+        student = Student(id = studentId, name = studentName)
+        BM.addBookToStudent(student, bookWithStudent)
+
+        return redirect("/books/rented")
+    
+    return render_template("giveBook.html", sid=sid, error=session.pop("error", None))
+
+
+@app.route("/books/rented")
+def showRented():
+    id = session.get("sid", None)
+    if not id:
+        session["error"] = "You need to login!"
+        return redirect("/login")
+
+    allRecord = BM.loadAll()
+    return render_template("rented.html", records = allRecord)
+
 @app.route("/static/<path:path>")
-def static(path):
+def staticBind(path):
     return send_file(os.path.join("static", path))
 
 

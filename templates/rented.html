@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/view.css">
 </head>
 <body>
     {% if error %}
         <div class="error">
             <div class="errorMsg">{{ error }}</div>
         </div>
-    {% endif %}
-
-    {% for i in books %}
-        <div>{{ i }}</div>
-    {% endfor %}
+    {% endif %} 
+    <div>
+        {{ records }}
+    </div>
 </body>
 </html>

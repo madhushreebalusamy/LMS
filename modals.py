@@ -37,12 +37,12 @@ class Admin(BaseModel):
         params = [i for i in self.model_dump().values()]
         return query, params
 
-class bookWithStudent(BaseModel):
+class BookWithStudent(BaseModel):
     id: int #book id
     rentOn: datetime
     dueDate: datetime
 
 class Student(BaseModel):
     id: int
-    name: str
-    books: Dict[int, bookWithStudent]
+    name: str = ""
+    books: Dict[int, BookWithStudent] | None = None
