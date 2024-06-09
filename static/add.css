@@ -12,10 +12,15 @@
 input {
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #5a290966;
+    border-radius: 10px;
     width: 300px;
     box-sizing: border-box;
+    background: #ffe3c4c7;
+    color: #4f2407;
+    font-weight: bold;
+    letter-spacing: .08em;
+    transition: .3s;
 }
 body{
     align-items: center;
@@ -25,9 +30,96 @@ body{
 input[type="submit"]{
     text-align: center;
     width: fit-content;
+    background-image: linear-gradient(45deg, #fdce99, #ffe3c4);
+    background-size: 100% .1em;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-color: #fff0;
+    border: none;
+    padding: .5em 2em;
+    border-radius: 10px;
+    transition: .4s;
+    font-weight: bold;
+    font-size: 1em;
+    color: #fdce99;
+    cursor: pointer;
 }
 form {
     align-items: center;
+    gap: 1em;
     display: flex;
     flex-direction: column;
+    background: #4f2407;
+    padding: 1em;
+    width: fit-content;
+    max-width: 80%;
+    border-radius: 10px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 18px;
+    font-family: math, monospace;
+    background: #ffe3c4;
+    color: #5a2909;
+}
+
+.entry {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    gap: 0em;
+    flex-direction: column;
+    background: #fdce991f;
+    padding: .5em 1em;
+    border-radius: 10px;
+    color: #ffe3c4;
+}
+
+.entry label {
+    text-transform: capitalize;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .7em;
+    width: fit-content;
+}
+
+input[type="submit"]:hover {
+    background-size: 100% 100%;
+    color: #4f2407;
+}
+
+form > .entry {
+    background: none;
+}
+
+.formDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+input:not([type="submit"]) {
+    outline: none;
+}
+
+input:not([type="submit"]):focus {
+    background: #fff;
+    box-shadow: 0 0 10px #ffe3c4;
 }

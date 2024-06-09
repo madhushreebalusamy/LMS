@@ -3,7 +3,7 @@ from mysql import connector
 from properties import PROPERTIES 
 from modals import Book, Author, Student, BookWithStudent, Admin
 from pydantic_core import from_json
-import json
+import json, pprint
 
 
 class DBManager:
@@ -40,7 +40,7 @@ class DBManager:
         """)
         cursor.execute("""
             create table if not exists admins (
-                id integer primary key auto_increment,
+                id integer primary key,
                 password text not null
             );
         """)
@@ -194,17 +194,16 @@ class DBManager:
             cursor.execute("select id from admins where id = %s", [model.id])
         else:
             cursor.execute("select id from admins where id = %s and password = %s", [model.id, model.password])
-
         one = cursor.fetchone()
-        print(one)
         return model if one else None
 
     def addAdmin(self, model: Admin):
-        if not self.getAdmin(model):
+        if self.getAdmin(model):
             return False
         cursor = self.db.cursor()
         cursor.execute('insert into admins values (%s, %s)', [model.id, model.password])
         cursor.close()
+        self.db.commit()
         return True
 
     def getAllAdmins(self):
@@ -233,15 +232,16 @@ class BookRentManager:
     
     def addBookToStudent(self, std: Student, bws: BookWithStudent):
         data = self.loadAll()
-        stdData = data.get(std.id, std.model_dump())
+        stdData = data.get(str(std.id), std.model_dump())
+        pprint.pprint(stdData)
         if stdData.get("books", None) is None:
             stdData["books"] = {}
-        if stdData.get("books").get(bws.id) is not None:
+        if stdData.get("books").get(str(str(bws.id))) is not None:
             return False
-        stdData["books"][bws.id] = bws.model_dump()
-        stdData["books"][bws.id]["rentOn"] = str(stdData["books"][bws.id]["rentOn"])
-        stdData["books"][bws.id]["dueDate"] = str(stdData["books"][bws.id]["dueDate"])
-        data[std.id] = stdData
+        stdData["books"][str(str(bws.id))] = bws.model_dump()
+        stdData["books"][str(str(bws.id))]["rentOn"] = str(stdData["books"][str(str(bws.id))]["rentOn"])
+        stdData["books"][str(str(bws.id))]["dueDate"] = str(stdData["books"][str(str(bws.id))]["dueDate"])
+        data[str(str(std.id))] = stdData
 
         with open(self.jsonFile, "w") as fp:
             print(data)
@@ -251,11 +251,11 @@ class BookRentManager:
     
     def returnBook(self, std: Student, bws: BookWithStudent):
         data = self.loadAll()
-        stdData = data.get(std.id, std.model_dump())
-        if stdData["books"].get(bws.id) is None:
+        stdData = data.get(str(std.id), std.model_dump())
+        if stdData["books"].get(str(bws.id)) is None:
             return False
-        stdData["books"].pop(bws.id)
-        data[std.id] = stdData
+        stdData["books"].pop(str(bws.id))
+        data[str(std.id)] = stdData
         with open(self.jsonFile, "w") as fp:
             json.dump(data, fp)
         return True

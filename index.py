@@ -30,7 +30,7 @@ def login():
         password = request.form.get("password")
         model = Admin(id=id, password=password)
         exists = DB.getAdmin(model)
-        print(exists)
+        print(id, password, exists)
         if exists:
             session["sid"] = id
             return redirect("/")
@@ -49,15 +49,12 @@ def signup():
         id = request.form.get("id")
         password = request.form.get("password")
         model = Admin(id=id, password=password)
-        print(model.model_dump())
         exists = DB.getAdmin(model)
         if exists:
             session["error"] = "Admin already exists"
-            error = session.get("error")
-    
             return render_template("signup.html", sid=sid, error=session.pop("error", None))
 
-        DB.addAdmin(model)
+        print(DB.addAdmin(model))
         session["sid"] = model.id
         return redirect("/")
 
@@ -210,13 +207,11 @@ def giveBook():
 
         book = exists
         canGive = book.minStock < (book.inStock - 1)
-        print(canGive)
         if not canGive:
             session["error"] = "Book not in stock"
             return redirect("/books/view")
     
         canGive = DB.decrementStock(book)
-        print(canGive)
         if not canGive:
             session["error"] = "Book not given"
             return redirect("/books/view")
@@ -230,6 +225,43 @@ def giveBook():
     return render_template("giveBook.html", sid=sid, error=session.pop("error", None))
 
 
+@app.route("/books/get", methods=["GET", "POST"])
+def getBook():
+    sid = session.get("sid", None)
+
+    if sid is None:
+        return redirect("/login")
+    
+    if request.method == "POST":
+        bookId = request.form.get("bookId")
+        studentId = request.form.get("studentId")
+        book = Book(id = bookId)
+
+        exists = DB.getBook(book)
+        if exists is None:
+            session["error"] = "Book not found"
+            return redirect("/books/view")
+
+        book = exists
+        canGive = book.totalBooks >= (book.inStock + 1)
+        if not canGive:
+            session["error"] = "Books already in total"
+            return redirect("/books/view")
+    
+        canGive = DB.incrementStock(book)
+        if not canGive:
+            session["error"] = "Book not given"
+            return redirect("/books/view")
+        
+        bookWithStudent = BookWithStudent(id = bookId)
+        student = Student(id = studentId)
+        BM.returnBook(student, bookWithStudent)
+
+        return redirect("/books/rented")
+    
+    return render_template("getBook.html", sid=sid, error=session.pop("error", None))
+
+
 @app.route("/books/rented")
 def showRented():
     id = session.get("sid", None)
@@ -238,7 +270,10 @@ def showRented():
         return redirect("/login")
 
     allRecord = BM.loadAll()
-    return render_template("rented.html", records = allRecord)
+    # return render_template("rented.html", records = allRecord)
+    return allRecord
+
+
 
 @app.route("/static/<path:path>")
 def staticBind(path):

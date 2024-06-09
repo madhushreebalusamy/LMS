@@ -39,8 +39,8 @@ class Admin(BaseModel):
 
 class BookWithStudent(BaseModel):
     id: int #book id
-    rentOn: datetime
-    dueDate: datetime
+    rentOn: datetime = datetime.now()
+    dueDate: datetime = datetime.now()
 
 class Student(BaseModel):
     id: int

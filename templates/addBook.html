@@ -1,26 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/static/add.css">
 </head>
+
 <body>
     {% if error %}
-        <div class="error">
-            <div class="errorMsg">{{ error }}</div>
-        </div>
+    <div class="error">
+        <div class="errorMsg">{{ error }}</div>
+    </div>
     {% endif %}
-    <form method="POST">
-        <input required placeholder="title" type="text" name="title"/>
-        <input required placeholder="authorId" type="text" name="authorId"/>
-        <input required placeholder="date" type="date" name="date"/>
-        <input required placeholder="edition" type="number" name="edition"/>
-        <input required placeholder="totalBooks" type="number" name="totalBooks"/>
-        <input required placeholder="inStock" type="number" name="inStock"/>
-        <input required placeholder="minStock" type="number" name="minStock"/>
-        <input type="submit" value="Add Book">
-    </form>
+    <div class="content">
+        <div class="title">
+            <h1>Add A New Book</h1>
+        </div>
+        <div class="formDiv">
+            <form method="POST">
+                <div class="form">
+                    <div class="entry">
+                        <label for="title">title</label>
+                        <input required placeholder="title" type="text" name="title" />
+                    </div>
+                    <div class="entry">
+                        <label for="authorId">authorId</label>
+                        <input required placeholder="authorId" type="text" name="authorId" />
+                    </div>
+                    <div class="entry">
+                        <label for="date">date</label>
+                        <input required placeholder="date" type="date" name="date" />
+                    </div>
+                    <div class="entry">
+                        <label for="edition">edition</label>
+                        <input required placeholder="edition" type="number" name="edition" />
+                    </div>
+                    <div class="entry">
+                        <label for="totalBooks">totalBooks</label>
+                        <input required placeholder="totalBooks" type="number" name="totalBooks" />
+                    </div>
+                    <div class="entry">
+                        <label for="inStock">inStock</label>
+                        <input required placeholder="inStock" type="number" name="inStock" />
+                    </div>
+                    <div class="entry">
+                        <label for="minStock">minStock</label>
+                        <input required placeholder="minStock" type="number" name="minStock" />
+                    </div>
+                </div>
+                <div class="entry">
+                    <input type="submit" value="Add Book">
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>
