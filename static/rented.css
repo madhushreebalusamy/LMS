@@ -1,0 +1,219 @@
+.head{
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border: 3px solid ;
+    width: fit-content;
+    padding: 5px;
+   
+
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #5a290966;
+    border-radius: 10px;
+    width: 300px;
+    box-sizing: border-box;
+    background: #ffe3c4c7;
+    color: #4f2407;
+    font-weight: bold;
+    letter-spacing: .08em;
+    transition: .3s;
+}
+body{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+input[type="submit"]{
+    text-align: center;
+    width: fit-content;
+    background-image: linear-gradient(45deg, #fdce99, #ffe3c4);
+    background-size: 100% .1em;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-color: #fff0;
+    border: none;
+    padding: .5em 2em;
+    border-radius: 10px;
+    transition: .4s;
+    font-weight: bold;
+    font-size: 1em;
+    color: #fdce99;
+    cursor: pointer;
+}
+form {
+    align-items: center;
+    gap: 1em;
+    display: flex;
+    flex-direction: column;
+    background: #4f2407;
+    padding: 1em;
+    width: fit-content;
+    max-width: 80%;
+    border-radius: 10px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 18px;
+    font-family: math, monospace;
+    background: #ffe3c4;
+    color: #5a2909;
+}
+
+.entry {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    gap: 0em;
+    flex-direction: column;
+    background: #fdce991f;
+    padding: .5em 1em;
+    border-radius: 10px;
+    color: #ffe3c4;
+}
+
+.entry label {
+    text-transform: capitalize;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .7em;
+    width: fit-content;
+}
+
+input[type="submit"]:hover {
+    background-size: 100% 100%;
+    color: #4f2407;
+}
+
+form > .entry {
+    background: none;
+}
+
+.formDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+input:not([type="submit"]) {
+    outline: none;
+}
+
+input:not([type="submit"]):focus {
+    background: #fff;
+    box-shadow: 0 0 10px #ffe3c4;
+}
+
+.error {
+    width: 80%;
+    text-align: center;
+    color: #fff;
+    background: #cb0000;
+    padding: 1em;
+    border-radius: 10px;
+    font-weight: bold;
+    font-family: monospace;
+    letter-spacing: .07em;
+    bottom: 1em;
+    position: absolute;
+}
+
+.allBooks {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 90%;
+    background: #4f2407;
+    border-radius: 10px;
+    padding: 1em;
+}
+
+.book {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    background: #fdce99;
+    padding: .5em 1.5em;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.book > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: .2em 1em;
+    background-image: linear-gradient(45deg, #5a290973, #5a290961);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 92% .1em;
+    border-radius: 10px;
+}
+
+.book > div :first-child:not(.title div) {
+    font-weight: bold;
+    color: #4f2407;
+}
+.book div.title {
+    font-size: 1.5em;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    text-transform: capitalize;
+    font-weight: bolder !important;
+    color: #4f2407cc !important;
+}
+
+.record {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    background: #4f240729;
+    color: #4f2407;
+    border-radius: 10px;
+    width: fit-content;
+    gap: 2em;
+    padding: 1em .5em;
+    margin: 1em;
+}
+
+div {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+h2 {
+    padding: 0;
+    margin: 0;
+}

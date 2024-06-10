@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/static/rented.css">
 </head>
 <body>
     {% if error %}
@@ -43,7 +44,26 @@
         <h1>Book Given To Students:</h1>
     </div>
     <div>
-        {{ records }}
+        {% for i, s in records.items() %}
+            <div class="record">
+                <div class="title">
+                    <h2>{{ s["name"] }}</h2>
+                    <div class="data">Id: {{ s["id"] }}</div>
+                </div>
+                <div class="books">
+                    {% for j, k in s["books"].items() %}
+                        <div class="book">
+                            <div class="title">#{{ j }}</div>
+                            <div class="content">
+                                <div>Book Id: {{ k.id }}</div>
+                                <div>Given On: {{ k.rentOn }}</div>
+                                <div>Due Date: {{ k.dueDate }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </body>
 </html>

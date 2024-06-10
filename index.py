@@ -64,10 +64,7 @@ def books():
     sid = session.get("sid", None)
     if sid is None:
         return redirect("/")
-
-    error = session.pop("error", None)
-    return render_template("books.html", sid=sid, error=session.pop("error", None))
-
+    return redirect("/books/view")
 
 @app.route("/books/view", methods = ["GET", "POST"])
 def viewAllBooks():
@@ -76,7 +73,6 @@ def viewAllBooks():
         return redirect("/")
 
     allBooks = DB.selectAllBooks()
-    error = session.pop("error", None)
     return render_template("viewBooks.html", sid=sid, books=allBooks, error=session.pop("error", None))
 
 
@@ -93,7 +89,7 @@ def deleteBook():
             session["error"] = "Book not found"
             return redirect("/books/delete")
         DB.deleteBookOrAuthor(book)
-        return redirect("/books/all")
+        return redirect("/books/view")
 
     return render_template("deleteBook.html", sid=sid, error=session.pop("error", None))
 
@@ -198,7 +194,7 @@ def giveBook():
             return redirect("/books/view")
 
         book = exists
-        canGive = book.minStock < (book.inStock - 1)
+        canGive = book.minStock <= (book.inStock - 1)
         if not canGive:
             session["error"] = "Book not in stock"
             return redirect("/books/view")
@@ -262,8 +258,9 @@ def showRented():
         return redirect("/login")
 
     allRecord = BM.loadAll()
-    # return render_template("rented.html", records = allRecord)
-    return allRecord
+    print(allRecord.items())
+    return render_template("rented.html", records = allRecord)
+    # return allRecord
 
 
 
