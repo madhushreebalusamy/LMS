@@ -131,7 +131,7 @@ def addAuthor():
         name = request.form.get("name")
         dob = request.form.get("dob")
         country = request.form.get("country")
-        author = Author(name=name, dob=dob, country=country)
+        author = Author(name=name, date=dob, country=country)
         DB.insertInto(author)
         return redirect("/authors/view")
 
