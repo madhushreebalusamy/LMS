@@ -1,20 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/static/view.css">
 </head>
+
 <body>
     {% if error %}
-        <div class="error">
-            <div class="errorMsg">{{ error }}</div>
-        </div>
+    <div class="error">
+        <div class="errorMsg">{{ error }}</div>
+    </div>
     {% endif %}
-
-    {% for i in books %}
-        <div>{{ i }}</div>
-    {% endfor %}
+    <div>
+        <h2>Available Books</h2>
+    </div>
+    <div class="allBooks">
+        {% for i in books %}
+        <div class="book">
+            <div class="title">
+                <div>{{ i.title }}</div>
+            </div>
+            <div>
+                <div>id</div>
+                <div>{{ i.id }}</div>
+            </div>
+            <div>
+                <div>authorId</div>
+                <div>{{ i.authorId }}</div>
+            </div>
+            <div>
+                <div>date</div>
+                <div>{{ i.date.date() }}</div>
+            </div>
+            <div>
+                <div>edition</div>
+                <div>{{ i.edition }}</div>
+            </div>
+            <div>
+                <div>totalBooks</div>
+                <div>{{ i.totalBooks }}</div>
+            </div>
+            <div>
+                <div>inStock</div>
+                <div>{{ i.inStock }}</div>
+            </div>
+            <div>
+                <div>minStock</div>
+                <div>{{ i.minStock }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </body>
+
 </html>

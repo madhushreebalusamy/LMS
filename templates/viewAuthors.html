@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,37 @@
     <link rel="stylesheet" href="/static/view.css">
 
 </head>
+
 <body>
     {% if error %}
-        <div class="error">
-            <div class="errorMsg">{{ error }}</div>
-        </div>
+    <div class="error">
+        <div class="errorMsg">{{ error }}</div>
+    </div>
     {% endif %}
-    {% for i in authors %}
-        <div>{{ i }}</div>
-    {% endfor %}
+    <div>
+        <h2>Available Authors</h2>
+    </div>
+    <div class="allBooks">
+        {% for i in authors %}
+        <div class="book">
+            <div class="title">
+                <div>{{ i.name }}</div>
+            </div>
+            <div>
+                <div>id</div>
+                <div>{{ i.id }}</div>
+            </div>
+            <div>
+                <div>Date Of Birth</div>
+                <div>{{ i.date.date() }}</div>
+            </div>
+            <div>
+                <div>Country</div>
+                <div>{{ i.country }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </body>
+
 </html>

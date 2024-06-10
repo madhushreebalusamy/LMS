@@ -12,7 +12,7 @@ body {
     position: relative;
     font-size: 18px;
     font-family: math, monospace;
-    background: #f0f0f0;
+    background: #ffe3c4;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,19 +23,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #fffd;
+    color: #ffe3c4;
     padding: .1em 2em;
-    background: #202020;
+    background: #5a2909;
     border: 1px solid #fff1;
     border-radius: 10px;
     margin: 1rem;
 }
 
 a {
-    color: #f6ff00;
+    color: #fdce99;
     padding: .5em 1em;
     text-decoration: none;
-    background-image: linear-gradient(0deg, #f6ff00, #f6ff00);
+    background-image: linear-gradient(0deg, #ffe3c4, #ffe3c4);
     background-repeat: no-repeat;
     background-position: bottom;
     background-size: 60% .1rem;
@@ -60,3 +60,18 @@ a:hover {background-size: 10em 3em;color: #303030;}
 }
 
 .loginUI h2 {margin: 0;}
+
+
+.error {
+    width: 80%;
+    text-align: center;
+    color: #fff;
+    background: #cb0000;
+    padding: 1em;
+    border-radius: 10px;
+    font-weight: bold;
+    font-family: monospace;
+    letter-spacing: .07em;
+    bottom: 1em;
+    position: absolute;
+}

@@ -18,7 +18,6 @@ BM = BookRentManager()
 @app.route("/", methods = ["GET", "POST"])
 def index():
     sid = session.get("sid", None)
-
     return render_template("index.html", sid=sid, error=session.pop("error", None))
 
 
@@ -37,8 +36,7 @@ def login():
         else:
             session["error"] = "Invalid Username Or Password"
             return redirect("/login")
-
-    
+        
     return render_template("login.html", sid=sid, error=session.pop("error", None))
 
 
@@ -58,7 +56,6 @@ def signup():
         session["sid"] = model.id
         return redirect("/")
 
-    
     return render_template("signup.html", sid=sid, error=session.pop("error", None))
 
 
@@ -96,10 +93,8 @@ def deleteBook():
             session["error"] = "Book not found"
             return redirect("/books/delete")
         DB.deleteBookOrAuthor(book)
-
         return redirect("/books/all")
 
-    
     return render_template("deleteBook.html", sid=sid, error=session.pop("error", None))
 
 
@@ -130,8 +125,6 @@ def addBook():
     if sid is None:
         return redirect("/")
 
-
-    
     return render_template("addBook.html", sid=sid, error=session.pop("error", None))
 
 
@@ -146,7 +139,6 @@ def addAuthor():
         DB.insertInto(author)
         return redirect("/authors/view")
 
-    
     return render_template("addAuthor.html", sid=sid, error=session.pop("error", None))
 
 
