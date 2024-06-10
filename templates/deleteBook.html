@@ -13,6 +13,34 @@
             <div class="errorMsg">{{ error }}</div>
         </div>
     {% endif %}
+    <style>
+
+        .nav a {
+            position: fixed;
+            top: .5em;
+            left: .7em;
+            background-image: linear-gradient(45deg, #4f2407, #4f2407);
+            padding: .3em 1em;
+            color: #4f2407;
+            border-radius: 10px;
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: 100% .2em;
+            background-clip: border-box;
+            text-decoration: none;
+            transition: .3s;
+            box-shadow: 0 5px 5px #00000036;
+        }
+        
+        .nav a:hover {
+            background-size: 100% 100%;
+            color: #ffe3c4;
+            box-shadow: 0 3px 10px #000;
+        }
+            </style>
+            <div class="nav">
+                <a href="/">Home</a>
+            </div>
     <div class="title">
         <h1>Delete An Existing Book</h1>
     </div>
